@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_search"
+            android:checked="true"
+            android:icon="@drawable/magnify"
+            android:title="Поиск" />
+        <item
+            android:id="@+id/nav_history"
+            android:checked="true"
+            android:icon="@drawable/wunderlist"
+            android:title="История" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/settings"
+            android:title="Настройки" />
+    </group>
+
+    <item android:title="Соц. сети">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/share_variant"
+                android:title="Поделиться" />
+        </menu>
+    </item>
+
+</menu>
