@@ -2,6 +2,7 @@ package tinkoff.fintech.cpstool.view;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -67,6 +68,7 @@ public class ThirdFragment extends Fragment{
 
         Button toMapButton = (Button)getActivity().findViewById(R.id.to_map_button);
         Button deleteButton = (Button)getActivity().findViewById(R.id.delete_button);
+        Button shareButton = (Button)getActivity().findViewById(R.id.shareButton);
 
         mainActivity = (MainActivity)getActivity();
 
@@ -116,6 +118,21 @@ public class ThirdFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 presenter.setFavourite(title, b);
+            }
+        });
+
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String textToSend = title + "\n"
+                        + "ИНН: " + inn + "\n"
+                        + "Адрес: " + address + "\n\n"
+                        + "Найдено с помощью 'CPS Tool' (Play Market link)";
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, textToSend);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, "Отправить"));
             }
         });
 

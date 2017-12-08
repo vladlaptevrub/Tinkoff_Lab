@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
@@ -133,7 +135,16 @@ public class MainActivity extends AppCompatActivity implements
             item.setChecked(true);
             setTitle(item.getTitle());
         } else if (id == R.id.nav_share) {
-            fragmentClass = FirstFragment.class;
+            String textToSend = "Приложение 'CPS Tool' для поиска контрагентов. \n" +
+                    "Ссылка для скачивая (Play Market): <-ссылка->";
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, textToSend);
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, "Рассказать друзьям"));
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
         }
 
         try {

@@ -8,16 +8,14 @@
 
     <TextView
         android:id="@+id/party_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Название"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/delete_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="Адрес:"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +67,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="Алтайский край, г Рубцовск, пр Ленина 36"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,8 +78,7 @@
         android:id="@+id/check_favourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Избранное"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/to_map_button" />
@@ -90,12 +87,11 @@
         android:id="@+id/to_map_button"
         android:layout_width="170dp"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
         android:text="Отобразить на карте"
         android:textColor="@android:color/background_light"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/address_value"
         app:layout_constraintTop_toBottomOf="@+id/address_value" />
 
     <Button
@@ -106,6 +102,16 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/delete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/shareButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/share"
+        app:layout_constraintStart_toEndOf="@+id/party_title"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
