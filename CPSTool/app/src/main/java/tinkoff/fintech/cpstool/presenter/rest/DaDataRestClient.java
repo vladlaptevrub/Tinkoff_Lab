@@ -52,11 +52,6 @@ public class DaDataRestClient {
         apiService = restAdapter.create(DaDataService.class);
     }
 
-    /**
-     * Get default instance of {@code DaDataRestClient}.
-     *
-     * @return an instance of DaDataRestClient.
-     */
     public static DaDataRestClient getInstance() {
         DaDataRestClient localInstance = instance;
         if (localInstance == null) {
@@ -70,22 +65,10 @@ public class DaDataRestClient {
         return localInstance;
     }
 
-    /**
-     * Get suggestion asynchronously.
-     *
-     * @param body     an object that need to be passed in the body of the request.
-     * @param callback a Retrofit callback.
-     */
     public void suggestAsync(DaDataBody body, Callback<RealmDaDataSuggestion> callback) {
         apiService.getSuggestionAsync(body, callback);
     }
 
-    /**
-     * Get suggestion synchronously.
-     *
-     * @param body an object that need to be passed in the body of the request.
-     * @return
-     */
     public RealmDaDataSuggestion suggestSync(DaDataBody body) {
         return apiService.getSuggestionSync(body);
     }

@@ -1,5 +1,8 @@
 package tinkoff.fintech.cpstool.presenter.interfaces;
 
+import android.content.Context;
+import android.location.Address;
+
 import java.util.List;
 
 import tinkoff.fintech.cpstool.model.history.Party;

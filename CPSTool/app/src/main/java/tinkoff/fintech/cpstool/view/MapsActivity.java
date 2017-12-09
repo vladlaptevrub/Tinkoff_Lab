@@ -82,14 +82,7 @@ public class MapsActivity extends FragmentActivity implements
 
         LatLng sydney = new LatLng(-34, 151);
         Geocoder geocoder = new Geocoder(this);
-        List<Address> addressList = new ArrayList<>();
-        if (address.length() > 0) {
-            try {
-                addressList = geocoder.getFromLocationName(address, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        List<Address> addressList = LatLngFromAddress(address);
 
         if(addressList.size() > 0) {
             double latitude= addressList.get(0).getLatitude();
@@ -132,5 +125,18 @@ public class MapsActivity extends FragmentActivity implements
         } else {
             return null;
         }
+    }
+
+    public List<Address> LatLngFromAddress(String address){
+        Geocoder geocoder = new Geocoder(this);
+        List<Address> addressList = new ArrayList<>();
+        if (address.length() > 0) {
+            try {
+                addressList = geocoder.getFromLocationName(address, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return addressList;
     }
 }

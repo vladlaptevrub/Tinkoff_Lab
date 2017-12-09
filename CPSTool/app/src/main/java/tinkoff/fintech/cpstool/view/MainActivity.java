@@ -17,11 +17,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import tinkoff.fintech.cpstool.R;
+import tinkoff.fintech.cpstool.view.fragments.FirstFragment;
+import tinkoff.fintech.cpstool.view.fragments.FourthFragment;
+import tinkoff.fintech.cpstool.view.fragments.SecondFragment;
+import tinkoff.fintech.cpstool.view.fragments.ThirdFragment;
 import tinkoff.fintech.cpstool.view.interfaces.IView;
 
 public class MainActivity extends AppCompatActivity implements
@@ -227,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private boolean setFragment(int key, String title){
+    public boolean setFragment(int key, String title){
         Fragment fragment = null;
         Class fragmentClass = null;
 
