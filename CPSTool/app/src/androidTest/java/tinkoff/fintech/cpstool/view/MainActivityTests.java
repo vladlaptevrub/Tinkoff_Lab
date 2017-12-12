@@ -1,17 +1,14 @@
 package tinkoff.fintech.cpstool.view;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.espresso.contrib.NavigationViewActions;
-import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 
 import org.junit.Rule;
 import org.junit.Test;
 
 import tinkoff.fintech.cpstool.R;
-import tinkoff.fintech.cpstool.view.fragments.SecondFragment;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

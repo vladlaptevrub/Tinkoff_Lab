@@ -1,14 +1,14 @@
 package tinkoff.fintech.cpstool;
 
 import org.junit.Test;
-import tinkoff.fintech.cpstool.view.fragments.ThirdFragment;
+import tinkoff.fintech.cpstool.view.fragments.InformationFragment;
 
 import static org.junit.Assert.*;
 
 public class UnitTests {
     @Test
     public void building_message_is_correct_not_null_test() throws Exception{
-        ThirdFragment thirdFragment = new ThirdFragment();
+        InformationFragment thirdFragment = new InformationFragment();
 
         String title = "test_title";
         String inn = "test_inn";
@@ -24,7 +24,7 @@ public class UnitTests {
 
     @Test
     public void building_message_is_correct_null_test() throws Exception{
-        ThirdFragment thirdFragment = new ThirdFragment();
+        InformationFragment thirdFragment = new InformationFragment();
 
         String title = "test_title";
         String inn = "test_inn";

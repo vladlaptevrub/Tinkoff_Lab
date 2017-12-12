@@ -15,7 +15,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -33,18 +32,16 @@ public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         IView{
 
-    private GoogleMap mMap;
-
-    private String title = "";
-    private String address = "";
-
-    private static final String APP_PREFERENCES = "mysettings";
-    private static final String APP_PREFERENCES_MAP_THEME = "MapTheme";
+    private final static String APP_PREFERENCES = "mysettings";
+    private final static String APP_PREFERENCES_MAP_THEME = "MapTheme";
 
     private final static String DARK_THEME = "DARK";
     private final static String LIGHT_THEME = "LIGHT";
 
+    private String mAddress = "";
+    private GoogleMap mMap;
     private SharedPreferences mSettings;
+    private String mTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +63,8 @@ public class MapsActivity extends FragmentActivity implements
         if (extras != null){
             String value = extras.getString("value");
             if (value != null){
-                title = presenter.findParty(value).getTitle();
-                address = presenter.findParty(value).getAddress();
+                mTitle = presenter.findParty(value).getTitle();
+                mAddress = presenter.findParty(value).getAddress();
             } else {
                 toastMessage("null string");
             }
@@ -82,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements
 
         LatLng sydney = new LatLng(-34, 151);
         Geocoder geocoder = new Geocoder(this);
-        List<Address> addressList = LatLngFromAddress(address);
+        List<Address> addressList = LatLngFromAddress(mAddress);
 
         if(addressList.size() > 0) {
             double latitude= addressList.get(0).getLatitude();
@@ -91,13 +88,13 @@ public class MapsActivity extends FragmentActivity implements
             if (getMapTheme() == null){
                 changeMapTheme(DARK_THEME);
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.dark_style));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(title).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
+                mMap.addMarker(new MarkerOptions().position(sydney).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
             } else if (getMapTheme().equals(LIGHT_THEME)){
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.light_style));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(title).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
+                mMap.addMarker(new MarkerOptions().position(sydney).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
             } else {
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.dark_style));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(title).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
+                mMap.addMarker(new MarkerOptions().position(sydney).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
             }
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14.0f));

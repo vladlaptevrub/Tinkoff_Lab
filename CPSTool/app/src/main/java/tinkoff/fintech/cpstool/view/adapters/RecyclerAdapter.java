@@ -14,13 +14,12 @@ import tinkoff.fintech.cpstool.R;
 import tinkoff.fintech.cpstool.model.history.Party;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    //private List<String> items;
-    private List<Party> items;
 
     private final static String TRUE = "true";
     private final static String FALSE = "false";
 
-    private OnItemClicked onClick;
+    private List<Party> mItems;
+    private OnItemClicked mOnClick;
 
     public interface OnItemClicked {
         void onItemClick(String value);
@@ -28,20 +27,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView itemView;
-        public ImageView favoriteIcon;
-        public LinearLayout partyLayout;
+        private TextView mItemView;
+        private ImageView mFavoriteIcon;
+        private LinearLayout mPartyLayout;
 
         public ViewHolder(View v) {
             super(v);
-            itemView = (TextView)v.findViewById(R.id.elementTitleTV);
-            favoriteIcon = (ImageView)v.findViewById(R.id.elementTitleIV);
-            partyLayout = (LinearLayout)v.findViewById(R.id.party_layout);
+            mItemView = (TextView)v.findViewById(R.id.elementTitleTV);
+            mFavoriteIcon = (ImageView)v.findViewById(R.id.elementTitleIV);
+            mPartyLayout = (LinearLayout)v.findViewById(R.id.party_layout);
         }
     }
 
     public RecyclerAdapter(List<Party> items) {
-        this.items = items;
+        this.mItems = items;
     }
 
     @Override
@@ -56,23 +55,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final String value = items.get(position).getTitle();
-        final String favoutite = items.get(position).getFavourite();
-        holder.itemView.setText(value);
+        final String value = mItems.get(position).getTitle();
+        final String favoutite = mItems.get(position).getFavourite();
+        holder.mItemView.setText(value);
         if (!favoutite.equals(TRUE)){
-            holder.favoriteIcon.setVisibility(View.INVISIBLE);
+            holder.mFavoriteIcon.setVisibility(View.INVISIBLE);
         }
-        holder.partyLayout.setOnClickListener(new View.OnClickListener() {
+        holder.mPartyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClick.onItemClick(value);
+                mOnClick.onItemClick(value);
             }
         });
 
-        holder.partyLayout.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.mPartyLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                onClick.onLongItemClick(value);
+                mOnClick.onLongItemClick(value);
                 return true;
             }
         });
@@ -80,10 +79,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return mItems.size();
     }
 
-    public void setOnClick(OnItemClicked onClick) {
-        this.onClick=onClick;
+    public void setmOnClick(OnItemClicked mOnClick) {
+        this.mOnClick = mOnClick;
     }
 }

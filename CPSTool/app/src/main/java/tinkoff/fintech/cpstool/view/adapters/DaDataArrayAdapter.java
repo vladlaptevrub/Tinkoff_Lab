@@ -8,17 +8,17 @@ import java.util.List;
 
 public class DaDataArrayAdapter<String> extends ArrayAdapter<String> {
 
-    private Filter filter = new KNoFilter();
-    private List<String> items;
+    private Filter mFilter = new KNoFilter();
+    private List<String> mItems;
 
     public DaDataArrayAdapter(Context context, int resource, List<String> items) {
         super(context, resource, items);
-        this.items = items;
+        this.mItems = items;
     }
 
     @Override
     public Filter getFilter() {
-        return filter;
+        return mFilter;
     }
 
     private class KNoFilter extends Filter {
@@ -26,8 +26,8 @@ public class DaDataArrayAdapter<String> extends ArrayAdapter<String> {
         @Override
         protected FilterResults performFiltering(CharSequence arg0) {
             FilterResults result = new FilterResults();
-            result.values = items;
-            result.count = items.size();
+            result.values = mItems;
+            result.count = mItems.size();
             return result;
         }
 

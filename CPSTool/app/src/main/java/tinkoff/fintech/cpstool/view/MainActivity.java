@@ -21,43 +21,41 @@ import android.view.Window;
 import android.widget.Toast;
 
 import tinkoff.fintech.cpstool.R;
-import tinkoff.fintech.cpstool.view.fragments.FirstFragment;
-import tinkoff.fintech.cpstool.view.fragments.FourthFragment;
-import tinkoff.fintech.cpstool.view.fragments.SecondFragment;
-import tinkoff.fintech.cpstool.view.fragments.ThirdFragment;
+import tinkoff.fintech.cpstool.view.fragments.SearchFragment;
+import tinkoff.fintech.cpstool.view.fragments.SettingsFragment;
+import tinkoff.fintech.cpstool.view.fragments.HistoryFragment;
+import tinkoff.fintech.cpstool.view.fragments.InformationFragment;
 import tinkoff.fintech.cpstool.view.interfaces.IView;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        FirstFragment.FirstFragmentListener,
-        SecondFragment.SecondFragmentListener,
-        ThirdFragment.ThirdFragmentListener,
+        SearchFragment.SearchFragmentListener,
+        HistoryFragment.HistoryFragmentListener,
+        InformationFragment.InformationFragmentListener,
         IView{
 
-    private NavigationView navigationView;
-    private FragmentManager fragmentManager;
-    private Toolbar toolbar;
-    private Bundle args = new Bundle();
-
-    private final static int FIRST = 1;
-    private final static int SECOND = 2;
-    private final static int THIRD = 3;
-    private final static int FOURTH = 4;
+    private final static int SEARCH = 1;
+    private final static int HISTORY = 2;
+    private final static int INFORMATION = 3;
+    private final static int SETTINGS = 4;
     private final static int MAP = 5;
 
-    private int activeScreen = FIRST;
+    private final static String APP_PREFERENCES = "mysettings";
+    private final static String APP_PREFERENCES_MAP_THEME = "MapTheme";
 
-    private static final String APP_PREFERENCES = "mysettings";
-    private static final String APP_PREFERENCES_MAP_THEME = "MapTheme";
-
+    private int mActiveScreen = SEARCH;
+    private Bundle mArgs = new Bundle();
+    private FragmentManager mFragmentManager;
+    private NavigationView mNavigationView;
     private SharedPreferences mSettings;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
@@ -67,17 +65,17 @@ public class MainActivity extends AppCompatActivity implements
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
-        fragmentManager = getSupportFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         try {
-            Fragment fragment = FirstFragment.class.newInstance();
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            Fragment fragment = SearchFragment.class.newInstance();
+            mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             setTitle("Поиск");
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -92,21 +90,21 @@ public class MainActivity extends AppCompatActivity implements
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            switch (activeScreen){
-                case FIRST:
+            switch (mActiveScreen){
+                case SEARCH:
                     openQuitDialog();
                     break;
-                case SECOND:
-                    setFragment(FIRST, "Поиск");
-                    navigationView.getMenu().getItem(0).setChecked(true);
+                case HISTORY:
+                    setFragment(SEARCH, "Поиск");
+                    mNavigationView.getMenu().getItem(0).setChecked(true);
                     break;
-                case THIRD:
-                    setFragment(SECOND, "История");
-                    navigationView.getMenu().getItem(1).setChecked(true);
+                case INFORMATION:
+                    setFragment(HISTORY, "История");
+                    mNavigationView.getMenu().getItem(1).setChecked(true);
                     break;
-                case FOURTH:
-                    setFragment(FIRST, "Поиск");
-                    navigationView.getMenu().getItem(0).setChecked(true);
+                case SETTINGS:
+                    setFragment(SEARCH, "Поиск");
+                    mNavigationView.getMenu().getItem(0).setChecked(true);
                     break;
             }
         }
@@ -123,18 +121,18 @@ public class MainActivity extends AppCompatActivity implements
 
         if (id == R.id.nav_search) {
             // Handle the camera action
-            fragmentClass = FirstFragment.class;
-            activeScreen = FIRST;
+            fragmentClass = SearchFragment.class;
+            mActiveScreen = SEARCH;
             item.setChecked(true);
             setTitle(item.getTitle());
         } else if (id == R.id.nav_history){
-            fragmentClass = SecondFragment.class;
-            activeScreen = SECOND;
+            fragmentClass = HistoryFragment.class;
+            mActiveScreen = HISTORY;
             item.setChecked(true);
             setTitle(item.getTitle());
         } else if (id == R.id.nav_manage) {
-            fragmentClass = FourthFragment.class;
-            activeScreen = FOURTH;
+            fragmentClass = SettingsFragment.class;
+            mActiveScreen = SETTINGS;
             item.setChecked(true);
             setTitle(item.getTitle());
         } else if (id == R.id.nav_share) {
@@ -156,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements
             e.printStackTrace();
         }
 
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -173,33 +171,33 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void firstCallBack(String value) {
-        args.clear();
-        args.putString("value", value);
-        boolean success = setFragment(THIRD, "Информация");
+    public void searchFragmentCallBack(String value) {
+        mArgs.clear();
+        mArgs.putString("value", value);
+        boolean success = setFragment(INFORMATION, "Информация");
         if (!success){
             toastMessage("Error");
         } else {
-            navigationView.getMenu().getItem(0).setChecked(false);
+            mNavigationView.getMenu().getItem(0).setChecked(false);
         }
     }
 
     @Override
-    public void secondCallBack(String value) {
-        args.clear();
-        args.putString("value", value);
-        boolean success = setFragment(THIRD, "Информация");
+    public void historyFragmentCallBack(String value) {
+        mArgs.clear();
+        mArgs.putString("value", value);
+        boolean success = setFragment(INFORMATION, "Информация");
         if (!success){
             toastMessage("Error");
         } else {
-            navigationView.getMenu().getItem(1).setChecked(false);
+            mNavigationView.getMenu().getItem(1).setChecked(false);
         }
     }
 
     @Override
-    public void thirdCallBack(String value) {
-        args.clear();
-        args.putString("value", value);
+    public void informationFragmentCallBack(String value) {
+        mArgs.clear();
+        mArgs.putString("value", value);
         boolean success = setFragment(MAP, "MAP");
         if (!success){
             toastMessage("Error");
@@ -207,8 +205,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void thirdComeBack() {
-        boolean success = setFragment(SECOND, "История");
+    public void informationFragmentComeBack() {
+        boolean success = setFragment(HISTORY, "История");
         if (!success){
             toastMessage("Error");
         }
@@ -235,29 +233,29 @@ public class MainActivity extends AppCompatActivity implements
         Class fragmentClass = null;
 
         switch (key){
-            case FIRST:
-                fragmentClass = FirstFragment.class;
-                activeScreen = FIRST;
+            case SEARCH:
+                fragmentClass = SearchFragment.class;
+                mActiveScreen = SEARCH;
                 setTitle(title);
                 break;
-            case SECOND:
-                fragmentClass = SecondFragment.class;
-                activeScreen = SECOND;
+            case HISTORY:
+                fragmentClass = HistoryFragment.class;
+                mActiveScreen = HISTORY;
                 setTitle(title);
                 break;
-            case THIRD:
-                fragmentClass = ThirdFragment.class;
-                activeScreen = THIRD;
+            case INFORMATION:
+                fragmentClass = InformationFragment.class;
+                mActiveScreen = INFORMATION;
                 setTitle(title);
                 break;
-            case FOURTH:
-                fragmentClass = FourthFragment.class;
-                activeScreen = FOURTH;
+            case SETTINGS:
+                fragmentClass = SettingsFragment.class;
+                mActiveScreen = SETTINGS;
                 setTitle(title);
                 break;
             case MAP:
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                intent.putExtras(args);
+                intent.putExtras(mArgs);
                 startActivity(intent);
                 return true;
             default:
@@ -266,12 +264,12 @@ public class MainActivity extends AppCompatActivity implements
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-            fragment.setArguments(args);
+            fragment.setArguments(mArgs);
         } catch (Exception e) {
             return false;
         }
 
-        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+        mFragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 
         return true;
     }
@@ -280,21 +278,18 @@ public class MainActivity extends AppCompatActivity implements
         final AlertDialog.Builder quitDialog = new AlertDialog.Builder(
                 MainActivity.this);
         quitDialog.setTitle("Вы хотите выйти?");
-
         quitDialog.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         });
-
         quitDialog.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-
         quitDialog.show();
     }
 }

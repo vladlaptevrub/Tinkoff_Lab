@@ -8,24 +8,24 @@
             android:id="@+id/nav_search"
             android:checked="true"
             android:icon="@drawable/magnify"
-            android:title="Поиск" />
+            android:title="@string/nav_search_title" />
         <item
             android:id="@+id/nav_history"
             android:checked="true"
             android:icon="@drawable/wunderlist"
-            android:title="История" />
+            android:title="@string/nav_history_title" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/settings"
-            android:title="Настройки" />
+            android:title="@string/nav_settings_title" />
     </group>
 
-    <item android:title="Соц. сети">
+    <item android:title="@string/nav_network_title">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/share_variant"
-                android:title="Поделиться" />
+                android:title="@string/nav_share_title" />
         </menu>
     </item>
 

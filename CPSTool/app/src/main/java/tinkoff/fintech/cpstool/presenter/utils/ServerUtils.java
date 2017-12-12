@@ -14,8 +14,6 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import retrofit.RetrofitError;
 import tinkoff.fintech.cpstool.model.history.Cache;
-import tinkoff.fintech.cpstool.model.realm.RealmDaDataAnswer;
-import tinkoff.fintech.cpstool.presenter.requests.Requests;
 import tinkoff.fintech.cpstool.view.interfaces.OnSuggestionsListener;
 import tinkoff.fintech.cpstool.model.realm.Query;
 import tinkoff.fintech.cpstool.model.realm.Result;
@@ -25,13 +23,12 @@ import tinkoff.fintech.cpstool.presenter.rest.DaDataRestClient;
 
 public class ServerUtils {
 
-    private final static ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final static ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
     public static void query(final String query, final OnSuggestionsListener listener) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                // Trim current query for ignoring whitespaces
                 String queryFromUser = query.replaceAll("\\s+", " ").trim();
 
                 if (!queryFromUser.isEmpty()) {
@@ -70,7 +67,7 @@ public class ServerUtils {
                 }
             }
         };
-        executor.submit(runnable);
+        EXECUTOR.submit(runnable);
     }
 
     private static void dispatchError(final String message, final OnSuggestionsListener listener) {
@@ -105,7 +102,7 @@ public class ServerUtils {
 
                 RealmResults<Cache> cacheData = realm.where(Cache.class).equalTo("title", suggestionResult).findAll();
 
-                //replace to model
+                /** replace to model */
                 if (cacheData.isEmpty()) {
                     realm.beginTransaction();
                     Cache cache = realm.createObject(Cache.class);
@@ -115,7 +112,7 @@ public class ServerUtils {
                     realm.commitTransaction();
                 }
 
-                //replace to model
+                /** replace to model */
                 realm.beginTransaction();
 
                 Result result = realm.createObject(Result.class);
@@ -125,7 +122,7 @@ public class ServerUtils {
                 realm.commitTransaction();
             }
 
-            //replace to model
+            /** replace to model */
             realm.beginTransaction();
 
             Query query = realm.createObject(Query.class);

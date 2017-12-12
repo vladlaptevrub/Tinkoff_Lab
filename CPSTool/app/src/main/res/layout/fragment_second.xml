@@ -36,7 +36,7 @@
         android:layout_marginTop="8dp"
         android:background="@android:color/white"
         android:ems="10"
-        android:hint="Контрагент"
+        android:hint="@string/party_hint"
         android:inputType="textPersonName"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -79,4 +79,24 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_maps">Map</string>
+    <string name="search_hint">Наименование/ИНН контрагента</string>
+    <string name="maps">Карты</string>
+    <string name="dark_theme_title">Темная тема</string>
+    <string name="history_title">История запросов</string>
+    <string name="delete_history_title">Удалить историю</string>
+    <string name="party_hint">Контрагент</string>
+    <string name="default_name">Название</string>
+    <string name="inn_title">ИНН:</string>
+    <string name="address_title">Адрес:</string>
+    <string name="default_inn">169256512</string>
+    <string name="default_address">Алтайский край, г Рубцовск, пр Ленина 36</string>
+    <string name="favourite_title">Избранное</string>
+    <string name="show_on_the_map">Отобразить на карте</string>
+    <string name="element_title">ElementTitle</string>
+    <string name="nav_search_title">Поиск</string>
+    <string name="nav_history_title">История</string>
+    <string name="nav_settings_title">Настройки</string>
+    <string name="nav_network_title">Соц. сети</string>
+    <string name="nav_share_title">Поделиться</string>
+    <string name="delete_all_title">Удалить все</string>
 </resources>

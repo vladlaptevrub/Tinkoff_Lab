@@ -14,10 +14,11 @@ import tinkoff.fintech.cpstool.model.realm.Query;
 import tinkoff.fintech.cpstool.model.realm.Result;
 
 public class PartyWorker implements IPartyWorker{
-    private Realm mRealm;
 
     private final static String FALSE = "false";
     private final static String TRUE = "true";
+
+    private Realm mRealm;
 
     public PartyWorker(){
         mRealm = Realm.getDefaultInstance();

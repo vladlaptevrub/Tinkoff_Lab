@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Название"
+        android:text="@string/default_name"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="ИНН:"
+        android:text="@string/inn_title"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Адрес:"
+        android:text="@string/address_title"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:text="169256512"
+        android:text="@string/default_inn"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="24dp"
-        android:text="Алтайский край, г Рубцовск, пр Ленина 36"
+        android:text="@string/default_address"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/inn_value"
@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Избранное"
+        android:text="@string/favourite_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/to_map_button" />
 
@@ -89,7 +89,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
-        android:text="Отобразить на карте"
+        android:text="@string/show_on_the_map"
         android:textColor="@android:color/background_light"
         app:layout_constraintStart_toStartOf="@+id/address_value"
         app:layout_constraintTop_toBottomOf="@+id/address_value" />

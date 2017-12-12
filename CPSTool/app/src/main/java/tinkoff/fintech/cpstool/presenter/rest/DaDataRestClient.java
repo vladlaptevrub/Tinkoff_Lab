@@ -15,7 +15,7 @@ import tinkoff.fintech.cpstool.BuildConfig;
 import tinkoff.fintech.cpstool.presenter.rest.interfaces.DaDataService;
 
 public class DaDataRestClient {
-    private static final String BASE_URL = "https://dadata.ru";
+    private final static String BASE_URL = "https://dadata.ru";
 
     private static volatile DaDataRestClient instance;
 
