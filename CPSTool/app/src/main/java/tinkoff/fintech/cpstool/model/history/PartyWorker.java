@@ -4,10 +4,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import tinkoff.fintech.cpstool.model.interfaces.IPartyWorker;
+import tinkoff.fintech.cpstool.model.realm.Query;
+import tinkoff.fintech.cpstool.model.realm.Result;
 
 public class PartyWorker implements IPartyWorker{
     private Realm mRealm;
@@ -98,6 +102,51 @@ public class PartyWorker implements IPartyWorker{
         RealmResults<Party> parties = mRealm.where(Party.class).findAll();
         parties.clear();
         mRealm.commitTransaction();
+    }
+
+    @Override
+    public void saveCache(String title, String address, String inn) {
+        mRealm.beginTransaction();
+        Cache cache = mRealm.createObject(Cache.class);
+        cache.setTitle(title);
+        cache.setAddress(address);
+        cache.setInn(inn);
+        mRealm.commitTransaction();
+    }
+
+    @Override
+    public void saveQuery(String queryFromUser, RealmList<Result> resultsRealm) {
+        mRealm.beginTransaction();
+
+        Query query = mRealm.createObject(Query.class);
+
+        query.setId(UUID.randomUUID().toString());
+        query.setQuery(queryFromUser);
+        query.setResult(resultsRealm);
+
+        mRealm.commitTransaction();
+    }
+
+    @Override
+    public RealmResults<Query> getQueries(String queryFromUser) {
+        return mRealm.where(Query.class).equalTo("query", queryFromUser).findAll();
+    }
+
+    @Override
+    public RealmResults<Cache> getCache(String title) {
+        return mRealm.where(Cache.class).equalTo("title", title).findAll();
+    }
+
+    @Override
+    public Result saveResult(String result) {
+        mRealm.beginTransaction();
+
+        Result realmResult = mRealm.createObject(Result.class);
+        realmResult.setResult(result);
+
+        mRealm.commitTransaction();
+
+        return realmResult;
     }
 
     private List<Party> getSortedData(){

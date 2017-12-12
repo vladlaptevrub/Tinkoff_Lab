@@ -106,6 +106,11 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public void toastMessage(String message) {
         Toast toast = Toast.makeText(MapsActivity.this, message, Toast.LENGTH_SHORT);
         toast.show();

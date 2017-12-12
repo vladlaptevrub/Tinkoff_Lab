@@ -31,7 +31,6 @@ public class FirstFragment extends Fragment implements
     private static final List<String> EMPTY = new ArrayList<>();
     private DaDataArrayAdapter<String> adapter;
     private AutoCompleteTextView textView;
-    private Toast toast;
     private MainActivity mainActivity;
 
     private FirstFragmentListener listener;
@@ -71,10 +70,9 @@ public class FirstFragment extends Fragment implements
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String value = adapter.getItem(i).toString();
+                String value = adapter.getItem(i);
+                mainActivity.toastMessage("'" + adapter.getItem(i) + "' добавлен в историю");
                 presenter.setData(value);
-                //Toast toast = Toast.makeText(getActivity(), adapter.getItem(i).toString() + " SELECTED", Toast.LENGTH_SHORT);
-                //toast.show();
                 listener.firstCallBack(value);
             }
         });
