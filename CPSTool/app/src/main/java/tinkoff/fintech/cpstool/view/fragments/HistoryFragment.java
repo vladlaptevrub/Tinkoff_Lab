@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +26,14 @@ import tinkoff.fintech.cpstool.model.history.Party;
 import tinkoff.fintech.cpstool.presenter.requests.Requests;
 import tinkoff.fintech.cpstool.view.MainActivity;
 import tinkoff.fintech.cpstool.view.adapters.RecyclerAdapter;
+import tinkoff.fintech.cpstool.view.helpers.RecyclerItemTouchHelper;
 
-public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemClicked {
+public class HistoryFragment extends Fragment implements
+        RecyclerAdapter.OnItemClicked,
+        RecyclerItemTouchHelper.RecyclerItemTouchHelperListener{
 
     private HistoryFragmentListener mListener;
-    private MainActivity mMainActivity;
+    //private MainActivity mMainActivity;
     private Requests mPresenter;
     private RecyclerAdapter mRecyclerAdapter;
     private RecyclerView mRecyclerView;
@@ -36,6 +42,7 @@ public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemC
 
     public interface HistoryFragmentListener {
         void historyFragmentCallBack(String value);
+        void historyFragmentToastCallBack(String value);
     }
 
     @Override
@@ -53,22 +60,15 @@ public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_second, container, false);
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        View view = inflater.inflate(R.layout.fragment_second, container, false);
         mPresenter = new Requests();
 
-        mRecyclerView = (RecyclerView)getActivity().findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager recyclerLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(recyclerLayoutManager);
 
-        mMainActivity = (MainActivity)getActivity();
-
-        mSearchInCacheEditText = (AutoCompleteTextView) getActivity()
+        mSearchInCacheEditText = (AutoCompleteTextView) view
                 .findViewById(R.id.searchInCacheEditText);
 
         updateRecyclerView();
@@ -79,6 +79,8 @@ public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemC
                 mListener.historyFragmentCallBack(mSearchAdapter.getItem(i).toString());
             }
         });
+
+        return view;
     }
 
     @Override
@@ -86,12 +88,21 @@ public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemC
         mListener.historyFragmentCallBack(value);
     }
 
-    @Override
+    /*@Override
     public void onLongItemClick(String value) {
         openDeleteDialog(value);
+    }*/
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        //openDeleteDialog(mSearchAdapter.getItem(position).toString());
+        String value = mSearchAdapter.getItem(position).toString();
+        mPresenter.deleteItem(value);
+        updateRecyclerView();
+        mListener.historyFragmentToastCallBack("'" + value + "' удален");
     }
 
-    private void openDeleteDialog(final String value) {
+    /*private void openDeleteDialog(final String value) {
         final AlertDialog.Builder quitDialog = new AlertDialog.Builder(
                 getActivity());
         quitDialog.setTitle("Удалить '" + value + "'?");
@@ -101,7 +112,7 @@ public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemC
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.deleteItem(value);
                 updateRecyclerView();
-                mMainActivity.toastMessage("'" + value + "' удален");
+                mListener.historyFragmentToastCallBack("'" + value + "' удален");
             }
         });
 
@@ -113,11 +124,18 @@ public class HistoryFragment extends Fragment implements RecyclerAdapter.OnItemC
         });
 
         quitDialog.show();
-    }
+    }*/
 
     private void updateRecyclerView(){
         mRecyclerAdapter = new RecyclerAdapter(mPresenter.getData());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mRecyclerAdapter);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+
         mRecyclerAdapter.setmOnClick(this);
 
         mSearchAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,

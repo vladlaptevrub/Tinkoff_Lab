@@ -1,5 +1,6 @@
 package tinkoff.fintech.cpstool.view.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,32 +13,43 @@ import android.widget.CompoundButton;
 
 import tinkoff.fintech.cpstool.R;
 import tinkoff.fintech.cpstool.presenter.requests.Requests;
-import tinkoff.fintech.cpstool.view.MainActivity;
 
 public class SettingsFragment extends Fragment{
+
+    private SettingsFragment.SettingsFragmentListener mListener;
 
     private final static String DARK_THEME = "DARK";
     private final static String LIGHT_THEME = "LIGHT";
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_fourth, container, false);
+    public interface SettingsFragmentListener {
+        void settingsFragmentStyleCallBack(String style);
+        void settingsFragmentToastCallBack(String text);
+        String settingsFragmentGetStyleCallBack();
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-        final CheckBox checkDarkMode = (CheckBox)getActivity().findViewById(R.id.checkDarkMode);
-        final Button clearHistoryButton = (Button) getActivity().findViewById(R.id.clearHistoryButton);
-        final MainActivity mainActivity = (MainActivity) getActivity();
+        try {
+            mListener = (SettingsFragment.SettingsFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + "MainActivity must implement SettingsFragmentListener");
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_fourth, container, false);
+        final CheckBox checkDarkMode = (CheckBox)view.findViewById(R.id.checkDarkMode);
+        final Button clearHistoryButton = (Button) view.findViewById(R.id.clearHistoryButton);
         final Requests presenter = new Requests();
-
-        if (mainActivity.getMapTheme() == null){
-            mainActivity.changeMapTheme(DARK_THEME);
+        if (mListener.settingsFragmentGetStyleCallBack() == null){
+            mListener.settingsFragmentStyleCallBack(DARK_THEME);
             checkDarkMode.setChecked(true);
-        } else if (mainActivity.getMapTheme().equals(LIGHT_THEME)){
+        } else if (mListener.settingsFragmentGetStyleCallBack().equals(LIGHT_THEME)){
             checkDarkMode.setChecked(false);
         } else {
             checkDarkMode.setChecked(true);
@@ -47,11 +59,11 @@ public class SettingsFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    mainActivity.changeMapTheme(DARK_THEME);
-                    mainActivity.toastMessage("Выбран темный стиль");
+                    mListener.settingsFragmentStyleCallBack(DARK_THEME);
+                    mListener.settingsFragmentToastCallBack("Выбран темный стиль");
                 } else {
-                    mainActivity.changeMapTheme(LIGHT_THEME);
-                    mainActivity.toastMessage("Выбран светлый стиль");
+                    mListener.settingsFragmentStyleCallBack(LIGHT_THEME);
+                    mListener.settingsFragmentToastCallBack("Выбран светлый стиль");
                 }
             }
         });
@@ -60,8 +72,9 @@ public class SettingsFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 presenter.clearHistoryData();
-                mainActivity.toastMessage("История очищена");
+                mListener.settingsFragmentToastCallBack("История очищена");
             }
         });
+        return view;
     }
 }

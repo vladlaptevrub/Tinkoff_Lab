@@ -1,5 +1,6 @@
 package tinkoff.fintech.cpstool.view.adapters;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import java.util.List;
 import tinkoff.fintech.cpstool.R;
 import tinkoff.fintech.cpstool.model.history.Party;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
     private final static String TRUE = "true";
     private final static String FALSE = "false";
@@ -23,19 +24,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public interface OnItemClicked {
         void onItemClick(String value);
-        void onLongItemClick(String value);
+        //void onLongItemClick(String value);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView mItemView;
         private ImageView mFavoriteIcon;
-        private LinearLayout mPartyLayout;
+        public ConstraintLayout viewForeground;
+        public LinearLayout viewBackground;
 
-        public ViewHolder(View v) {
+        public MyViewHolder(View v) {
             super(v);
             mItemView = (TextView)v.findViewById(R.id.elementTitleTV);
             mFavoriteIcon = (ImageView)v.findViewById(R.id.elementTitleIV);
-            mPartyLayout = (LinearLayout)v.findViewById(R.id.party_layout);
+            viewForeground = (ConstraintLayout)v.findViewById(R.id.party_layout);
+            viewBackground = (LinearLayout)v.findViewById(R.id.background_party_layout);
         }
     }
 
@@ -44,37 +47,37 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.party_item, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
+        MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         final String value = mItems.get(position).getTitle();
         final String favoutite = mItems.get(position).getFavourite();
         holder.mItemView.setText(value);
         if (!favoutite.equals(TRUE)){
             holder.mFavoriteIcon.setVisibility(View.INVISIBLE);
         }
-        holder.mPartyLayout.setOnClickListener(new View.OnClickListener() {
+        holder.viewForeground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mOnClick.onItemClick(value);
             }
         });
 
-        holder.mPartyLayout.setOnLongClickListener(new View.OnLongClickListener() {
+        /*holder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 mOnClick.onLongItemClick(value);
                 return true;
             }
-        });
+        });*/
     }
 
     @Override

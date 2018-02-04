@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements
         SearchFragment.SearchFragmentListener,
         HistoryFragment.HistoryFragmentListener,
         InformationFragment.InformationFragmentListener,
+        SettingsFragment.SettingsFragmentListener,
         IView{
 
     private final static int SEARCH = 1;
@@ -120,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.nav_search) {
-            // Handle the camera action
             fragmentClass = SearchFragment.class;
             mActiveScreen = SEARCH;
             item.setChecked(true);
@@ -183,6 +183,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void searchFragmentToastCallBack(String value) {
+        toastMessage(value);
+    }
+
+    @Override
     public void historyFragmentCallBack(String value) {
         mArgs.clear();
         mArgs.putString("value", value);
@@ -192,6 +197,11 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             mNavigationView.getMenu().getItem(1).setChecked(false);
         }
+    }
+
+    @Override
+    public void historyFragmentToastCallBack(String value) {
+        toastMessage(value);
     }
 
     @Override
@@ -205,6 +215,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void informationFragmentToastCallBack(String value) {
+        toastMessage(value);
+    }
+
+    @Override
     public void informationFragmentComeBack() {
         boolean success = setFragment(HISTORY, "История");
         if (!success){
@@ -213,19 +228,24 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void changeMapTheme(String style) {
+    public void settingsFragmentStyleCallBack(String style) {
         SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(APP_PREFERENCES_MAP_THEME, style);
         editor.apply();
     }
 
     @Override
-    public String getMapTheme() {
+    public String settingsFragmentGetStyleCallBack() {
         if(mSettings.contains(APP_PREFERENCES_MAP_THEME)) {
             return mSettings.getString(APP_PREFERENCES_MAP_THEME, "");
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void settingsFragmentToastCallBack(String text) {
+        toastMessage(text);
     }
 
     public boolean setFragment(int key, String title){

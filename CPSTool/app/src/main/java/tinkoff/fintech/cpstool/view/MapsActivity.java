@@ -26,11 +26,11 @@ import java.util.List;
 
 import tinkoff.fintech.cpstool.R;
 import tinkoff.fintech.cpstool.presenter.requests.Requests;
-import tinkoff.fintech.cpstool.view.interfaces.IView;
+import tinkoff.fintech.cpstool.view.interfaces.IMapView;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
-        IView{
+        IMapView{
 
     private final static String APP_PREFERENCES = "mysettings";
     private final static String APP_PREFERENCES_MAP_THEME = "MapTheme";

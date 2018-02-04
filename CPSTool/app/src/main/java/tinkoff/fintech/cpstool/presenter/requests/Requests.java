@@ -2,13 +2,8 @@ package tinkoff.fintech.cpstool.presenter.requests;
 
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmResults;
-import tinkoff.fintech.cpstool.model.history.Cache;
 import tinkoff.fintech.cpstool.model.history.Party;
 import tinkoff.fintech.cpstool.model.history.PartyWorker;
-import tinkoff.fintech.cpstool.model.realm.Query;
-import tinkoff.fintech.cpstool.model.realm.Result;
 import tinkoff.fintech.cpstool.presenter.interfaces.IRequests;
 
 public class Requests implements IRequests {
@@ -48,12 +43,12 @@ public class Requests implements IRequests {
         mModel.clearHistoryData();
     }
 
-    @Override
+    /*@Override
     public void saveCache(String title, String address, String inn){
         mModel.saveCache(title, address, inn);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void saveQuery(String queryFromUser, RealmList<Result> resultsRealm) {
         mModel.saveQuery(queryFromUser, resultsRealm);
     }
@@ -71,5 +66,5 @@ public class Requests implements IRequests {
     @Override
     public Result saveResult(String result) {
         return mModel.saveResult(result);
-    }
+    }*/
 }

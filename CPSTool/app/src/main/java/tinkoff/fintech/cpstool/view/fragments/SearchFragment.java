@@ -3,7 +3,6 @@ package tinkoff.fintech.cpstool.view.fragments;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,9 +18,8 @@ import java.util.List;
 import tinkoff.fintech.cpstool.R;
 import tinkoff.fintech.cpstool.presenter.requests.Requests;
 import tinkoff.fintech.cpstool.view.adapters.DaDataArrayAdapter;
-import tinkoff.fintech.cpstool.view.MainActivity;
 import tinkoff.fintech.cpstool.view.interfaces.OnSuggestionsListener;
-import tinkoff.fintech.cpstool.presenter.utils.ServerUtils;
+import tinkoff.fintech.cpstool.model.utils.ServerUtils;
 
 public class SearchFragment extends Fragment implements
         TextWatcher,
@@ -31,11 +29,11 @@ public class SearchFragment extends Fragment implements
 
     private DaDataArrayAdapter<String> mAdapter;
     private SearchFragmentListener mListener;
-    private MainActivity mMainActivity;
     private AutoCompleteTextView mTextView;
 
     public interface SearchFragmentListener{
         void searchFragmentCallBack(String value);
+        void searchFragmentToastCallBack(String value);
     }
 
     @Override
@@ -46,21 +44,15 @@ public class SearchFragment extends Fragment implements
             mListener = (SearchFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + "MainActivity must implement FirstFragmentListener");
+                    + "MainActivity must implement SearchFragmentListener");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_first, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mMainActivity = (MainActivity)getActivity();
-        mTextView = (AutoCompleteTextView) getActivity().findViewById(R.id.autoCompleteTextView);
+        View view = inflater.inflate(R.layout.fragment_first, container, false);
+        mTextView = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteTextView);
         mAdapter = new DaDataArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, EMPTY);
         final Requests presenter = new Requests();
 
@@ -70,11 +62,13 @@ public class SearchFragment extends Fragment implements
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String value = mAdapter.getItem(i);
-                mMainActivity.toastMessage("'" + mAdapter.getItem(i) + "' добавлен в историю");
+                mListener.searchFragmentToastCallBack("'" + mAdapter.getItem(i) + "' добавлен в историю");
                 presenter.setData(value);
                 mListener.searchFragmentCallBack(value);
             }
         });
+
+        return view;
     }
 
     @Override
@@ -112,6 +106,6 @@ public class SearchFragment extends Fragment implements
 
     @Override
     public void onError(String message) {
-        mMainActivity.toastMessage(message);
+        mListener.searchFragmentToastCallBack(message);
     }
 }

@@ -23,7 +23,6 @@ import tinkoff.fintech.cpstool.view.MainActivity;
 public class InformationFragment extends Fragment{
 
     private InformationFragmentListener mListener;
-    private MainActivity mMainActivity;
     private Requests mPresenter;
 
     private final static String FALSE = "false";
@@ -36,6 +35,7 @@ public class InformationFragment extends Fragment{
 
     public interface InformationFragmentListener {
         void informationFragmentCallBack(String value);
+        void informationFragmentToastCallBack(String value);
         void informationFragmentComeBack();
     }
 
@@ -54,23 +54,17 @@ public class InformationFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_third, container, false);
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_third, container, false);
 
-        final TextView titleView = (TextView)getActivity().findViewById(R.id.party_title);
-        final TextView innView = (TextView)getActivity().findViewById(R.id.inn_value);
-        final TextView addressView = (TextView)getActivity().findViewById(R.id.address_value);
-        final CheckBox checkFavourite = (CheckBox)getActivity().findViewById(R.id.check_favourite);
+        final TextView titleView = (TextView)view.findViewById(R.id.party_title);
+        final TextView innView = (TextView)view.findViewById(R.id.inn_value);
+        final TextView addressView = (TextView)view.findViewById(R.id.address_value);
+        final CheckBox checkFavourite = (CheckBox)view.findViewById(R.id.check_favourite);
 
-        final Button toMapButton = (Button)getActivity().findViewById(R.id.to_map_button);
-        final Button deleteButton = (Button)getActivity().findViewById(R.id.delete_button);
-        final Button shareButton = (Button)getActivity().findViewById(R.id.shareButton);
-
-        mMainActivity = (MainActivity)getActivity();
+        final Button toMapButton = (Button)view.findViewById(R.id.to_map_button);
+        final Button deleteButton = (Button)view.findViewById(R.id.delete_button);
+        final Button shareButton = (Button)view.findViewById(R.id.shareButton);
 
         mPresenter = new Requests();
 
@@ -83,10 +77,10 @@ public class InformationFragment extends Fragment{
                 mAddress = party.getAddress();
                 mFavourite = party.getFavourite();
             } else {
-                mMainActivity.toastMessage("null string");
+                mListener.informationFragmentToastCallBack("Null string");
             }
         } else {
-            mMainActivity.toastMessage("No arguments");
+            mListener.informationFragmentToastCallBack("No arguments");
         }
 
         titleView.setText(mTitle);
@@ -134,18 +128,18 @@ public class InformationFragment extends Fragment{
             }
         });
 
+        return view;
     }
 
     private void openDeleteDialog(final String value) {
-        final AlertDialog.Builder quitDialog = new AlertDialog.Builder(
-                getActivity());
+        final AlertDialog.Builder quitDialog = new AlertDialog.Builder(getActivity());
         quitDialog.setTitle("Удалить '" + value + "'?");
 
         quitDialog.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mPresenter.deleteItem(value);
-                mMainActivity.toastMessage("'" + value + "' удален");
+                mListener.informationFragmentToastCallBack("'" + value + "' удален");
                 mListener.informationFragmentComeBack();
             }
         });

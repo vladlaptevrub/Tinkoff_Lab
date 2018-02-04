@@ -4,14 +4,10 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 import tinkoff.fintech.cpstool.model.interfaces.IPartyWorker;
-import tinkoff.fintech.cpstool.model.realm.Query;
-import tinkoff.fintech.cpstool.model.realm.Result;
 
 public class PartyWorker implements IPartyWorker{
 
@@ -105,7 +101,27 @@ public class PartyWorker implements IPartyWorker{
         mRealm.commitTransaction();
     }
 
-    @Override
+    private List<Party> getSortedData(){
+        RealmResults<Party> partiesResults = mRealm.where(Party.class).findAll();
+        List<Party> favouriteParties = new ArrayList<>();
+        List<Party> simpleParties = new ArrayList<>();
+        List<Party> sortedList = new ArrayList<>();
+
+        for (int i = 0; i < partiesResults.size(); i++){
+            if (partiesResults.get(i).getFavourite().equals(TRUE)){
+                favouriteParties.add(partiesResults.get(i));
+            } else {
+                simpleParties.add(partiesResults.get(i));
+            }
+        }
+
+        sortedList.addAll(favouriteParties);
+        sortedList.addAll(simpleParties);
+
+        return sortedList;
+    }
+
+    /*@Override
     public void saveCache(String title, String address, String inn) {
         mRealm.beginTransaction();
         Cache cache = mRealm.createObject(Cache.class);
@@ -148,25 +164,5 @@ public class PartyWorker implements IPartyWorker{
         mRealm.commitTransaction();
 
         return realmResult;
-    }
-
-    private List<Party> getSortedData(){
-        RealmResults<Party> partiesResults = mRealm.where(Party.class).findAll();
-        List<Party> favouriteParties = new ArrayList<>();
-        List<Party> simpleParties = new ArrayList<>();
-        List<Party> sortedList = new ArrayList<>();
-
-        for (int i = 0; i < partiesResults.size(); i++){
-            if (partiesResults.get(i).getFavourite().equals(TRUE)){
-                favouriteParties.add(partiesResults.get(i));
-            } else {
-                simpleParties.add(partiesResults.get(i));
-            }
-        }
-
-        sortedList.addAll(favouriteParties);
-        sortedList.addAll(simpleParties);
-
-        return sortedList;
-    }
+    }*/
 }
