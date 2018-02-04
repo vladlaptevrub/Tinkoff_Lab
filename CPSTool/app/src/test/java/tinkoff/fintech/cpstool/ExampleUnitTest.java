@@ -1,28 +1,15 @@
 package tinkoff.fintech.cpstool;
 
-import android.location.Address;
-import android.location.Geocoder;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-
-import tinkoff.fintech.cpstool.view.MainActivity;
-import tinkoff.fintech.cpstool.view.MapsActivity;
-import tinkoff.fintech.cpstool.view.fragments.ThirdFragment;
+import tinkoff.fintech.cpstool.view.fragments.InformationFragment;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
 public class ExampleUnitTest {
     @Test
     public void building_message_is_correct_not_null_test() throws Exception{
-        ThirdFragment thirdFragment = new ThirdFragment();
+        InformationFragment thirdFragment = new InformationFragment();
 
         String title = "test_title";
         String inn = "test_inn";
@@ -38,7 +25,7 @@ public class ExampleUnitTest {
 
     @Test
     public void building_message_is_correct_null_test() throws Exception{
-        ThirdFragment thirdFragment = new ThirdFragment();
+        InformationFragment thirdFragment = new InformationFragment();
 
         String title = "test_title";
         String inn = "test_inn";
