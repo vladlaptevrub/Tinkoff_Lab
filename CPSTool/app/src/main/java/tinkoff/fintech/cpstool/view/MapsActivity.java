@@ -1,6 +1,7 @@
 package tinkoff.fintech.cpstool.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -77,28 +78,33 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng sydney = new LatLng(-34, 151);
-        Geocoder geocoder = new Geocoder(this);
+        LatLng partyPos = new LatLng(-34, 151);
+        //Geocoder geocoder = new Geocoder(this);
         List<Address> addressList = LatLngFromAddress(mAddress);
 
         if(addressList.size() > 0) {
             double latitude= addressList.get(0).getLatitude();
             double longitude= addressList.get(0).getLongitude();
-            sydney = new LatLng(latitude, longitude);
+            partyPos = new LatLng(latitude, longitude);
             if (getMapTheme() == null){
                 changeMapTheme(DARK_THEME);
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.dark_style));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
+                mMap.addMarker(new MarkerOptions().position(partyPos).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
             } else if (getMapTheme().equals(LIGHT_THEME)){
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.light_style));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
+                mMap.addMarker(new MarkerOptions().position(partyPos).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
             } else {
                 mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.dark_style));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
+                mMap.addMarker(new MarkerOptions().position(partyPos).title(mTitle).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
             }
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14.0f));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(partyPos));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(partyPos, 14.0f));
 
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            toastMessage("Ошибка");
+            startActivity(intent);
+            finish();
         }
     }
 

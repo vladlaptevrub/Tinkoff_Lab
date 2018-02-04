@@ -10,7 +10,7 @@ import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
-import tinkoff.fintech.cpstool.model.realm.RealmDaDataSuggestion;
+import tinkoff.fintech.cpstool.model.query.RealmDaDataSuggestion;
 import tinkoff.fintech.cpstool.BuildConfig;
 import tinkoff.fintech.cpstool.presenter.rest.interfaces.DaDataService;
 

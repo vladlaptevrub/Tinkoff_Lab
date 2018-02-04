@@ -18,12 +18,12 @@ import java.util.List;
 import tinkoff.fintech.cpstool.R;
 import tinkoff.fintech.cpstool.presenter.requests.Requests;
 import tinkoff.fintech.cpstool.view.adapters.DaDataArrayAdapter;
-import tinkoff.fintech.cpstool.view.interfaces.OnSuggestionsListener;
+import tinkoff.fintech.cpstool.view.interfaces.ISuggestionsListener;
 import tinkoff.fintech.cpstool.model.utils.ServerUtils;
 
 public class SearchFragment extends Fragment implements
         TextWatcher,
-        OnSuggestionsListener {
+        ISuggestionsListener {
 
     private static final List<String> EMPTY = new ArrayList<>();
 
@@ -62,12 +62,11 @@ public class SearchFragment extends Fragment implements
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String value = mAdapter.getItem(i);
-                mListener.searchFragmentToastCallBack("'" + mAdapter.getItem(i) + "' добавлен в историю");
                 presenter.setData(value);
+                mListener.searchFragmentToastCallBack("'" + mAdapter.getItem(i) + "' добавлен в историю");
                 mListener.searchFragmentCallBack(value);
             }
         });
-
         return view;
     }
 

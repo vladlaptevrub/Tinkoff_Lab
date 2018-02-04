@@ -14,10 +14,10 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import retrofit.RetrofitError;
 import tinkoff.fintech.cpstool.model.history.Cache;
-import tinkoff.fintech.cpstool.view.interfaces.OnSuggestionsListener;
-import tinkoff.fintech.cpstool.model.realm.Query;
-import tinkoff.fintech.cpstool.model.realm.Result;
-import tinkoff.fintech.cpstool.model.realm.RealmDaDataSuggestion;
+import tinkoff.fintech.cpstool.view.interfaces.ISuggestionsListener;
+import tinkoff.fintech.cpstool.model.query.Query;
+import tinkoff.fintech.cpstool.model.query.Result;
+import tinkoff.fintech.cpstool.model.query.RealmDaDataSuggestion;
 import tinkoff.fintech.cpstool.presenter.rest.DaDataBody;
 import tinkoff.fintech.cpstool.presenter.rest.DaDataRestClient;
 
@@ -25,7 +25,7 @@ public class ServerUtils {
 
     private final static ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
 
-    public static void query(final String query, final OnSuggestionsListener listener) {
+    public static void query(final String query, final ISuggestionsListener listener) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -70,7 +70,7 @@ public class ServerUtils {
         EXECUTOR.submit(runnable);
     }
 
-    private static void dispatchError(final String message, final OnSuggestionsListener listener) {
+    private static void dispatchError(final String message, final ISuggestionsListener listener) {
         if (listener != null) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
@@ -102,7 +102,6 @@ public class ServerUtils {
 
                 RealmResults<Cache> cacheData = realm.where(Cache.class).equalTo("title", suggestionResult).findAll();
 
-                /** replace to model */
                 if (cacheData.isEmpty()) {
                     realm.beginTransaction();
                     Cache cache = realm.createObject(Cache.class);
@@ -112,7 +111,6 @@ public class ServerUtils {
                     realm.commitTransaction();
                 }
 
-                /** replace to model */
                 realm.beginTransaction();
 
                 Result result = realm.createObject(Result.class);
@@ -122,7 +120,6 @@ public class ServerUtils {
                 realm.commitTransaction();
             }
 
-            /** replace to model */
             realm.beginTransaction();
 
             Query query = realm.createObject(Query.class);
@@ -135,7 +132,7 @@ public class ServerUtils {
         }
     }
 
-    private static void dispatchUpdate(final List<String> suggestions, final OnSuggestionsListener listener) {
+    private static void dispatchUpdate(final List<String> suggestions, final ISuggestionsListener listener) {
         if (listener != null && suggestions.size() > 0) {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {

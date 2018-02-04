@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -25,7 +26,7 @@ import tinkoff.fintech.cpstool.view.fragments.SearchFragment;
 import tinkoff.fintech.cpstool.view.fragments.SettingsFragment;
 import tinkoff.fintech.cpstool.view.fragments.HistoryFragment;
 import tinkoff.fintech.cpstool.view.fragments.InformationFragment;
-import tinkoff.fintech.cpstool.view.interfaces.IView;
+import tinkoff.fintech.cpstool.view.interfaces.IMainView;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements
         HistoryFragment.HistoryFragmentListener,
         InformationFragment.InformationFragmentListener,
         SettingsFragment.SettingsFragmentListener,
-        IView{
+        IMainView {
 
     private final static int SEARCH = 1;
     private final static int HISTORY = 2;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Fragment fragment = null;
         Class fragmentClass = null;

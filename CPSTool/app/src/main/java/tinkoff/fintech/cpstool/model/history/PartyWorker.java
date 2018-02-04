@@ -8,6 +8,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import tinkoff.fintech.cpstool.model.interfaces.IPartyWorker;
+import tinkoff.fintech.cpstool.model.query.Query;
 
 public class PartyWorker implements IPartyWorker{
 
@@ -58,6 +59,7 @@ public class PartyWorker implements IPartyWorker{
         newParty.setAddress(data.getAddress());
         newParty.setFavourite(FALSE);
         mRealm.commitTransaction();
+        clearCache();
     }
 
     @Override
@@ -98,6 +100,23 @@ public class PartyWorker implements IPartyWorker{
         mRealm.beginTransaction();
         RealmResults<Party> parties = mRealm.where(Party.class).findAll();
         parties.clear();
+        mRealm.commitTransaction();
+
+        clearCache();
+        clearQueries();
+    }
+
+    private void clearCache(){
+        mRealm.beginTransaction();
+        RealmResults<Cache> caches = mRealm.where(Cache.class).findAll();
+        caches.clear();
+        mRealm.commitTransaction();
+    }
+
+    private void clearQueries(){
+        mRealm.beginTransaction();
+        RealmResults<Query> queries = mRealm.where(Query.class).findAll();
+        queries.clear();
         mRealm.commitTransaction();
     }
 

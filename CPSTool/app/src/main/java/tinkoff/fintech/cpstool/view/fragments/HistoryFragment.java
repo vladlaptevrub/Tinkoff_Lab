@@ -128,8 +128,6 @@ public class HistoryFragment extends Fragment implements
 
     private void updateRecyclerView(){
         mRecyclerAdapter = new RecyclerAdapter(mPresenter.getData());
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(mRecyclerAdapter);

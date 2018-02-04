@@ -3,7 +3,7 @@ package tinkoff.fintech.cpstool.presenter.rest.interfaces;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.POST;
-import tinkoff.fintech.cpstool.model.realm.RealmDaDataSuggestion;
+import tinkoff.fintech.cpstool.model.query.RealmDaDataSuggestion;
 import tinkoff.fintech.cpstool.presenter.rest.DaDataBody;
 
 public interface DaDataService {
